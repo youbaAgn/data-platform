@@ -1,5 +1,7 @@
 # data-platform
 
+[![dbt CI](https://github.com/youbaAgn/data-platform/actions/workflows/dbt-ci.yml/badge.svg)](https://github.com/youbaAgn/data-platform/actions/workflows/dbt-ci.yml)
+
 Data platform built with dbt-core, DuckDB and GitHub Actions.
 
 ## Stack
