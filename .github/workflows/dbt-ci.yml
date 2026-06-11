@@ -1,0 +1,42 @@
+name: dbt CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  dbt-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dbt
+        run: pip install dbt-core dbt-duckdb
+
+      - name: Create profiles.yml
+        run: |
+          mkdir -p ~/.dbt
+          cat <<EOF > ~/.dbt/profiles.yml
+          jaffle_shop:
+            outputs:
+              dev:
+                type: duckdb
+                path: dev.duckdb
+                threads: 1
+            target: dev
+          EOF
+
+      - name: Run dbt
+        working-directory: jaffle_shop
+        run: |
+          dbt seed
+          dbt run
+          dbt test
